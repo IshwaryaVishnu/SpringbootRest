@@ -30,6 +30,10 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public void addRole(Role role) {
         if (roles.contains(role)) {
