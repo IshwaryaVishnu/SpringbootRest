@@ -18,7 +18,7 @@ import java.util.List;
 
 
         // http://localhost:8080/api/v1/role/
-        @GetMapping("/")
+        @GetMapping("/") //fetch data read only method
         public ResponseEntity<List<RoleDto>> getAll() {
             //return ResponseEntity.ok(roleService.getAll()); // 200
             return ResponseEntity.status(HttpStatus.OK).body(roleService.getAll());
@@ -43,7 +43,7 @@ import java.util.List;
         }
 
 
-        @PutMapping("/")
+        @PutMapping("/") //update
         public ResponseEntity<Void> update(@RequestBody RoleDto dto){
             roleService.update(dto);
             return ResponseEntity.noContent().build();
