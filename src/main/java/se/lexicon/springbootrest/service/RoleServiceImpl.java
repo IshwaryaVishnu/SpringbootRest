@@ -1,19 +1,21 @@
 package se.lexicon.springbootrest.service;
 // import the model mapper class
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.lexicon.springbootrest.exception.DataDuplicateException;
 import se.lexicon.springbootrest.exception.DataNotFoundException;
 import se.lexicon.springbootrest.model.dto.RoleDto;
 import se.lexicon.springbootrest.model.entity.Role;
+import se.lexicon.springbootrest.repository.RoleRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-
-    @Autowired
+@Autowired
     RoleRepository roleRepository;
     @Autowired
     ModelMapper modelMapper;
@@ -21,12 +23,12 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDto> getAll() {
-        List<Role> roleList = roleRepository.findAllByOrderByIdDesc();
+        List<Role> roleList = roleRepository.findAllByOrderByDesc();
         /*return roleList.stream()
                 .map(role -> new RoleDto(role.getId(), role.getName()))
                 .collect(Collectors.toList());*/
 
-        return modelMapper.map(roleList, new TypeToken<List<RoleDto>>() {
+        return modelMapper.map(roleList, new TypeToken() {
         }.getType());
     }
 
