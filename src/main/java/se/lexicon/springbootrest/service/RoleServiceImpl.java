@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-@Autowired
+    @Autowired
     RoleRepository roleRepository;
     @Autowired
     ModelMapper modelMapper;
@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
                 .map(role -> new RoleDto(role.getId(), role.getName()))
                 .collect(Collectors.toList());*/
 
-        return modelMapper.map(roleList, new TypeToken() {
+        return modelMapper.map(roleList, new TypeToken<List<RoleDto>>() {
         }.getType());
     }
 
@@ -36,17 +36,16 @@ public class RoleServiceImpl implements RoleService {
     public RoleDto findById(Integer roleId) {
         if (roleId == null) throw new IllegalArgumentException("role id was null");
         Optional<Role> optionalRole = roleRepository.findById(roleId);
-        if (optionalRole.isPresent()) {
-            Role entity = optionalRole.get();
-            return modelMapper.map(entity, RoleDto.class);
-        }
-        return null;
+        if (!optionalRole.isPresent()) throw new DataNotFoundException("role id was not valid");
+        Role entity = optionalRole.get();
+        return modelMapper.map(entity, RoleDto.class);
     }
 
     @Override
     public RoleDto create(RoleDto roleDto) {
         if (roleDto == null) throw new IllegalArgumentException("role data was null");
         if (roleDto.getId() != 0) throw new IllegalArgumentException("role id should be null or zero");
+        // todo: check the name that should not exist in the db...
 
         Role createdEntity = roleRepository.save(modelMapper.map(roleDto, Role.class));
         return modelMapper.map(createdEntity, RoleDto.class);
@@ -73,4 +72,6 @@ public class RoleServiceImpl implements RoleService {
         if (roleDto == null) throw new DataNotFoundException("id was not valid");
         roleRepository.deleteById(roleId);
     }
+
+
 }
