@@ -3,6 +3,7 @@ package se.lexicon.springbootrest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import se.lexicon.springbootrest.model.dto.UserDto;
 import se.lexicon.springbootrest.service.UserService;
@@ -14,12 +15,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/user")
+
+@Validated
 public class UserController {
-    @Autowired
-    UserService userService;
+
+    @Autowired UserService userService;
+
 
     //POST  http://localhost:8080/api/v1/user/
-    //request body { username: user, password: 123456, roles: {id: 1, name: ADMIN,...}}
+    //request body { username: user, password: 123456, rolses: {id: 1, name: ADMIN,...}}
     //@RequestMapping(path = "/", method = RequestMethod.POST)
 
     @PostMapping("/")
@@ -47,6 +51,5 @@ public class UserController {
         userService.disableUserByUsername(username);
         return ResponseEntity.noContent().build();
     }
-
 
 }
